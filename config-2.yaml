@@ -3,11 +3,11 @@
   become_user: root
 
   tasks:
-    - name: JWT var
+    - name: rate limit var
       shell: cat {{ input_file }} | shyaml get-value info.rate-limit
-      register: nginx_include_jwt
+      register: nginx_include_rate_limit
     - set_fact:
-        rate_limit_var: "{{ nginx_include_jwt.stdout }}"
+        rate_limit_var: "{{ nginx_include_rate_limit.stdout }}"
     - debug: var=rate_limit_var
     - name: update rate limit
       lineinfile:
