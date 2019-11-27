@@ -13,3 +13,15 @@
         src: api-gateway.j2
         dest: "{{ input_file }}.conf"
       delegate_to: localhost
+    - name: JWT var
+      shell: cat {{ input_file }} | shyaml get-value info.rate-limit
+      register: nginx_include_jwt
+    - set_fact:
+        rate_limit_var: "{{ nginx_include_jwt.stdout }}"
+    - debug: var=rate_limit_var
+    - name: update global rate limit
+      lineinfile:
+        path: "{{ input_file }}.conf"
+        regexp: '^#<global_rate_limit>'
+        line: 'limit_req_zone $binary_remote_addr zone=mylimit:10m rate=1r/m;'
+      when: rate_limit_var == true

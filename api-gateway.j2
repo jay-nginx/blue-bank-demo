@@ -1,4 +1,4 @@
-limit_req_zone $binary_remote_addr zone=mylimit:10m rate=1r/m;
+#<global_rate_limit>
 
 server {
     listen 80;
@@ -10,20 +10,6 @@ server {
     # Invalid resource
     {{ config_snippet }}
 
-    location /api/f1/seasons {
-        proxy_pass http://18.219.91.158:80;
-        auth_jwt '';
-        auth_jwt_key_file /etc/nginx/secrets/api_secret_jwt.jwk;
-    }
-
-    location /api/f1/circuits {
-        proxy_pass http://18.219.91.158:80;
-    }
-
-    location /api/f1/constructors {
-        proxy_pass http://18.219.91.158:80;
-    }
-
 
     # Error responses
     proxy_intercept_errors on;     # Do not send backend errors to the client
@@ -32,6 +18,3 @@ server {
     location @400 {
         return 400 '{"status":400,"message":"Bad request"}\n';
     }
-
-
-}
