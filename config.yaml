@@ -10,6 +10,6 @@
     - set_fact: config_snippet={{nginx_snippet.stdout}}
     - name: replace config
       template:
-        src: scott.j2
-        dest: scott.conf
+        src: api-gateway.j2
+        dest: api-gateway.conf
       delegate_to: localhost
