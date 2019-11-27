@@ -93,7 +93,7 @@ for SWAGGER_PATH in `shyaml keys paths < $1`; do
         echo "location ~ ^$BASEPATH$URI\$ {" # Regex match
     fi
 
-    METHODS=`shyaml keys paths.$SWAGGER_PATH < $1 | grep -v parameters | tr '\n'' '`
+    METHODS=`shyaml keys paths.$SWAGGER_PATH < $1 | grep -v parameters | tr '\n' ' '`
     if [ "$METHODS" != "" ]; then
         echo "    limit_except $METHODS{}"
     fi
