@@ -1,0 +1,19 @@
+swagger: "2.0"
+info:
+  title: drivers-api
+  description: API description in Markdown.
+  version: 1.0.0
+host: ibm.datapower.api
+basePath: /api/f1
+schemes:
+  - http
+paths:
+  /drivers:
+    get:
+      summary: Returns a list of users.
+      description: Optional extended description in Markdown.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
