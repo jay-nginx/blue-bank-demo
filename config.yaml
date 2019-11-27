@@ -11,5 +11,5 @@
     - name: replace config
       template:
         src: api-gateway.j2
-        dest: {{ input_file }}.conf
+        dest: "{{input_file}}".conf
       delegate_to: localhost
