@@ -1,0 +1,15 @@
+- hosts: "{{ target_hosts | default('localhost') }}"
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: build snippet from swagger
+      shell: ./a.sh -l -u {{ upstream_ip }} {{ input_file }} | grep -v shyaml
+      register: nginx_snippet
+    - debug: var=nginx_snippet.stdout
+    - set_fact: config_snippet={{nginx_snippet.stdout}}
+    - name: replace config
+      template:
+        src: scott.j2
+        dest: scott.conf
+      delegate_to: localhost
