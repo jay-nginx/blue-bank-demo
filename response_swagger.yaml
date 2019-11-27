@@ -4,7 +4,7 @@ info:
   description: API description in Markdown.
   version: 1.0.0
   rate-limit: false
-  jwt-tokens: false
+  jwt-tokens: true
 host: ibm.datapower.api
 basePath: /api/f1
 schemes:

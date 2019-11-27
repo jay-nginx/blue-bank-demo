@@ -1,0 +1,19 @@
+- hosts: "{{ target_hosts | default('localhost') }}"
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: JWT var
+      shell: cat {{ input_file }} | shyaml get-value info.jwt-tokens
+      register: nginx_include_jwt
+    - set_fact:
+        jwt_var: "{{ nginx_include_jwt.stdout }}"
+    - debug: var=jwt_var
+    - name: update jwt
+      blockinfile:
+        path: "{{ input_file }}.conf"
+        insertafter: 'location = /_drivers-api'
+        block: |
+          auth_jwt '';
+          auth_jwt_key_file /etc/nginx/secrets/api_secret_jwt.jwk;
+      when: jwt_var == true
