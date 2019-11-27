@@ -3,7 +3,7 @@ info:
   title: drivers-api
   description: API description in Markdown.
   version: 1.0.0
-  rate-limit: true
+  rate-limit: false
   jwt-tokens: false
 host: ibm.datapower.api
 basePath: /api/f1
