@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
-# swagger2nginx.sh (c) NGINX, Inc. [v0.2 03-May-2018] Liam Crilly <liam.crilly@n
-ginx.com>
+# swagger2nginx.sh (c) NGINX, Inc. [v0.2 03-May-2018] Liam Crilly <liam.crilly@nginx.com>
 #
 # Requires shyaml for YAML processing: https://github.com/0k/shyaml
 
@@ -9,8 +8,7 @@ if [ $# -lt 1 ]; then
     echo "### USAGE: `basename $0` [options] swagger_file.yaml"
     echo "### Options:"
     echo "### -b | --basepath <basePath>       # Override Swagger basePath"
-    echo "### -l | --location                  # Create policy location (require
-s -u)"
+    echo "### -l | --location                  # Create policy location (requires -u)"
     echo "### -n | --api-name <API name>       # Override Swagger title"
     echo "### -p | --prefix <prefix path>      # Apply prefix to basePath"
     echo "### -u | --upstream <upstream name>  # Specify upstream group"
@@ -19,8 +17,7 @@ fi
 
 which shyaml
 if [ $? -ne 0 ]; then
-    echo "### `basename $0` ERROR: shyaml not found, see https://github.com/0k/s
-hyaml"
+    echo "### `basename $0` ERROR: shyaml not found, see https://github.com/0k/shyaml"
     exit 1
 fi
 
@@ -59,8 +56,7 @@ while [ $# -gt 1 ]; do
 done
 
 if [ $DO_LOCATION -eq 1 ] && [ "$UPSTREAM" == "" ]; then
-    echo "### `basename $0` ERROR: Policy location requires upstream --upstream
-name"
+    echo "### `basename $0` ERROR: Policy location requires upstream --upstream name"
     exit 1
 fi
 
@@ -71,11 +67,9 @@ fi
 
 if [ "$API_NAME" == "" ]; then
     # Convert title to NGINX-friendly API name
-    API_NAME=`shyaml get-value info.title < $1 | tr '[:space:]' '_' | tr -cd '[:
-alnum:]_-' 2> /dev/null`
+    API_NAME=`shyaml get-value info.title < $1 | tr '[:space:]' '_' | tr -cd '[:alnum:]_-' 2> /dev/null`
     if [ "$API_NAME" == "" ]; then
-        echo "### `basename $0` ERROR: Swagger file has missing/invalid title fo
-r API name"
+        echo "### `basename $0` ERROR: Swagger file has missing/invalid title for API name"
         exit 1
     fi
 fi
@@ -94,14 +88,12 @@ for SWAGGER_PATH in `shyaml keys paths < $1`; do
     URI=`echo $SWAGGER_PATH | sed -e "s/\({.*}\)/\[\^\/\]\*/g"`
 
     if [ "$SWAGGER_PATH" == "$URI" ]; then
-        echo "location = $BASEPATH$URI {"    # Exact match when no path template
-s
+        echo "location = $BASEPATH$URI {"    # Exact match when no path templates
     else
         echo "location ~ ^$BASEPATH$URI\$ {" # Regex match
     fi
 
-    METHODS=`shyaml keys paths.$SWAGGER_PATH < $1 | grep -v parameters | tr '\n'
- ' '`
+    METHODS=`shyaml keys paths.$SWAGGER_PATH < $1 | grep -v parameters | tr '\n'' '`
     if [ "$METHODS" != "" ]; then
         echo "    limit_except $METHODS{}"
     fi
