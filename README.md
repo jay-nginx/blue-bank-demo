@@ -23,3 +23,6 @@ This demo assumes:
     java installed
     user created with sudo previliges & access to remotely execute via visudo
     sshd config enabled to enable password 'yes'
+## Bearer Token
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJhZG1pbiI6dHJ1ZX0.81hUKh-nDlFM5FD400i4J99EHYWENMHqQLpY_qEmUEM
