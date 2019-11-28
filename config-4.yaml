@@ -1,0 +1,20 @@
+- hosts: "{{ target_hosts | default('localhost') }}"
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Enable New Service
+      shell: cat {{ input_file }} | shyaml get-value info.add-new-service
+      register: nginx_include_new_svc
+    - set_fact:
+        new_svr: "{{ nginx_include_new_svc.stdout }}"
+    - debug: var=new_svr
+    - name: update svc
+      blockinfile:
+        path: "{{ input_file }}.conf"
+        insertafter: 'proxy_intercept_errors on;'
+        block: |
+          location = /api/f1/seasons {
+          proxy_pass http://18.219.91.158:80;
+          }
+      when: new_svr == true
