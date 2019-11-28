@@ -5,6 +5,7 @@ info:
   version: 1.0.0
   rate-limit: true
   jwt-tokens: true
+  add-new-service: true
 host: ibm.datapower.api
 basePath: /api/f1
 schemes:
